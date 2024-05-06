@@ -3,7 +3,6 @@ import './App.css';
 import { Counter } from './components/counter/Counter';
 import CountValue from './components/countValue/CountValue';
 
-
 export type CounterStateType = {
   counter: number
   min: number
@@ -12,55 +11,53 @@ export type CounterStateType = {
   maxInputValue: number
 }
 
+const MIN_VALUE = 0;
+const MAX_VALUE = 5;
+const STEP = 1;
+
 function App() {
   
   const getFromStorage = () => {
     let minNumber = localStorage.getItem('minValue');
     let maxNumber = localStorage.getItem('maxValue');
     return {
-      minNumber: minNumber ? JSON.parse(minNumber) : 0,
-      maxNumber: maxNumber ? JSON.parse(maxNumber) : 5,
+      min: JSON.parse(minNumber ?? `${MIN_VALUE}`) ,
+      max: maxNumber ? JSON.parse(maxNumber) : MAX_VALUE,
     }
   }
 
-
-  // const [minValue, setMinValue] = useState<number>(getFromStorage().minNumber)
-  // const [maxValue, setMaxValue] = useState<number>(getFromStorage().maxNumber)
-  // const [count, setCount] = useState<number>(minValue)
   const [editMode, setEditMode] = useState(false)
 
   const [counterState, setCounterState] = useState<CounterStateType>({
-    counter: 0,
-    min: getFromStorage().minNumber,
-    max: getFromStorage().maxNumber,
-    minInputValue: 0,
-    maxInputValue: 5,
+    counter: MIN_VALUE,
+    ...getFromStorage(),
+    minInputValue: MIN_VALUE,
+    maxInputValue: MAX_VALUE,
   })
 
-  console.log(counterState.max)
-
   const updateMinInputValue = (minInputValue: number) => {
-    setCounterState({...counterState, minInputValue})
+    setCounterState(prevState => ({...prevState, minInputValue}))
   }
 
   const updateMaxInputValue = (maxInputValue: number) => {
-    setCounterState({...counterState, maxInputValue})
+    setCounterState(prevState => ({...prevState, maxInputValue}))
   }
 
   const updateEditMode = (value: boolean) => {
     setEditMode(value)
-    setCounterState({
+    setCounterState(prev => ({
       ...counterState,
       counter: counterState.minInputValue,
-    })
+      max: prev.maxInputValue,
+      min: prev.minInputValue
+    }))
   }
 
   const incrementCounter = () => {
     if(counterState.counter < counterState.maxInputValue) {
       setCounterState({
         ...counterState,
-        counter: counterState.counter + 1,
-        max: counterState.maxInputValue
+        counter: counterState.counter + STEP,
       })
     }
   }
@@ -72,8 +69,6 @@ function App() {
     })
   }
 
-  // const onHandleSetupEditMode = () => setEditMode(true)
-
   return (
     <div className="App">
       {editMode ? (
@@ -82,7 +77,6 @@ function App() {
           counterState={counterState}
           updateMinInputValue={updateMinInputValue}
           updateMaxInputValue={updateMaxInputValue}
-          incrementCounter={incrementCounter}
         />
       ) : (
         <Counter 
@@ -90,7 +84,6 @@ function App() {
           incrementCounter={incrementCounter}
           resetCounter={resetCounter}
           updateEditMode={updateEditMode}
-          // onHandleSetupEditMod={onHandleSetupEditMode}
         />
         )
       }
