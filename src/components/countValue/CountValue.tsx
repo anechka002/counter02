@@ -1,26 +1,32 @@
-import React, { ChangeEvent, useState } from 'react'
-import { CounterStateType } from '../../App'
+import React, { ChangeEvent } from 'react'
 import s from './CountValue.module.css'
 import Input from '../input/Input'
 import Button from '../button/Button'
+import { updateMaxInputValueAC, updateMinInputValueAC } from '../../reducers/countReducer'
+import { useAppSelector } from '../../hooks/hooks'
+import { useDispatch } from 'react-redux'
 
 type Props = {
   updateEditMode: (isEditMode: boolean) => void
-  counterState: CounterStateType
-  updateMinInputValue: (minInputValue: number) => void
-  updateMaxInputValue: (maxInputValue: number) => void
 }
 
-export function CountValue({updateEditMode, counterState, updateMinInputValue, updateMaxInputValue}: Props) {
+export function CountValue({updateEditMode}: Props) {
+  const {minInputValue, maxInputValue} = useAppSelector(state => state.counter)
+  const dispatch = useDispatch()
 
   const onClickSettingsHandler = () => {
-    localStorage.setItem('maxValue', JSON.stringify(counterState.maxInputValue))
-    localStorage.setItem('minValue', JSON.stringify(counterState.minInputValue))
+    // localStorage.setItem('maxValue', JSON.stringify(counterState.maxInputValue))
+    // localStorage.setItem('minValue', JSON.stringify(counterState.minInputValue))
     updateEditMode(false)
   }
 
-  const onChangeMinInputValue = (e:ChangeEvent<HTMLInputElement>) => { // можно так
-    updateMinInputValue(+e.currentTarget.value)
+  const onChangeMinInputValue = (e:ChangeEvent<HTMLInputElement>) => { 
+    dispatch(updateMinInputValueAC(+e.currentTarget.value))
+  }
+
+  const onChangeMaxInputValue = (e:ChangeEvent<HTMLInputElement>) => { 
+    // updateMinInputValue(+e.currentTarget.value) // можно так
+    dispatch(updateMaxInputValueAC(+e.currentTarget.value))
   }
 
   return (
@@ -29,47 +35,29 @@ export function CountValue({updateEditMode, counterState, updateMinInputValue, u
         <div>
           <span>max value:</span>
           <Input 
-            className={counterState.minInputValue >= counterState.maxInputValue ? s.inputRed : s.inputStyle}
+            className={minInputValue >= maxInputValue ? s.inputRed : s.inputStyle}
             type="number" 
-            value={counterState.maxInputValue}
-            onChangeValue={value=>updateMaxInputValue(+value)} // так тоже можно
-          />
-          {/* <input 
-            className={props.counterState.minInputValue >= props.counterState.maxInputValue ? s.inputRed : s.inputStyle}
-            type="number" 
-            value={props.counterState.maxInputValue}
+            value={maxInputValue}
+            //onChangeValue={value=>updateMaxInputValue(+value)} // так тоже можно
             onChange={onChangeMaxInputValue}
-          /> */}
+          />
         </div>
         <div>
           <span>min value:</span>
           <Input
-            className={counterState.minInputValue < 0 || counterState.minInputValue >= counterState.maxInputValue ? s.inputRed : s.inputStyle} 
+            className={minInputValue < 0 || minInputValue >= maxInputValue ? s.inputRed : s.inputStyle} 
             type={"number"} 
-            value={counterState.minInputValue} 
+            value={minInputValue} 
             onChange={onChangeMinInputValue}
           />
-          {/* <input 
-            className={props.counterState.minInputValue < 0 || props.counterState.minInputValue >= props.counterState.maxInputValue ? s.inputRed : s.inputStyle}
-            type="number" 
-            value={props.counterState.minInputValue}
-            onChange={onChangeMinInputValue}
-          /> */}
         </div>
       </div>
         <div className={s.btnField}>
           <Button
             className={s.btn}
             onClick={onClickSettingsHandler}
-            disabled={counterState.minInputValue < 0 || counterState.minInputValue >= counterState.maxInputValue}
+            disabled={minInputValue < 0 || minInputValue >= maxInputValue}
           >set</Button>
-          {/* <button 
-            className={s.btn}
-            onClick={onClickSetNewValueHandler}
-            disabled={props.counterState.minInputValue < 0 || props.counterState.minInputValue >= props.counterState.maxInputValue}
-          >
-            set
-          </button>   */}
         </div>
     </div>
   )
