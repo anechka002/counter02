@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Counter } from './components/counter/Counter';
 import CountValue from './components/countValue/CountValue';
+import { useAppSelector } from './hooks/hooks';
+import { useDispatch } from 'react-redux';
+import { editModeAC } from './reducers/modeReducer';
 
 function App() {
 
@@ -14,7 +17,10 @@ function App() {
   //   }
   // }
 
-  const [editMode, setEditMode] = useState(false)
+  // const [editMode, setEditMode] = useState(false)
+
+  const editMode = useAppSelector(state => state.mode.editMode)
+  const dispatch = useDispatch();
 
   // const [counterState, setCounterState] = useState<CounterStateType>({
   //   counter: MIN_VALUE,
@@ -24,7 +30,8 @@ function App() {
   // })
 
   const updateEditMode = (value: boolean) => {
-    setEditMode(value)
+    dispatch(editModeAC(value))
+    // setEditMode(value)
     // setCounterState(prev => ({
     //   ...counterState,
     //   counter: counterState.minInputValue,
@@ -62,9 +69,9 @@ function App() {
   return (
     <div className="App">
       {editMode ? (
-        <CountValue updateEditMode={updateEditMode} />
+        <CountValue/>
       ) : (
-        <Counter updateEditMode={updateEditMode} />
+        <Counter/>
         )
       }
     </div>
