@@ -3,16 +3,12 @@ import s from './CountValue.module.css';
 import { ScreenValue } from './screenValue/ScreenValue';
 import { SetButton } from '../button/SetButton';
 
-type Props = {
-  updateEditMode: (isEditMode: boolean) => void;
-};
-
-export function CountValue({ updateEditMode }: Props) {
+export function CountValue() {
   
   return (
     <div className={s.counterValue}>
       <ScreenValue/>
-      <SetButton updateEditMode={updateEditMode}/>     
+      <SetButton/>     
     </div>
   );
 }
