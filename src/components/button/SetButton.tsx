@@ -6,11 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setCounterAC } from '../../reducers/countReducer';
 import { editModeAC } from '../../reducers/modeReducer';
 
-type SetButtonProps = {
-  updateEditMode: (isEditMode: boolean) => void;
-};
-
-export const SetButton = ({updateEditMode}: SetButtonProps) => {
+export const SetButton = () => {
   const minInputValue = useAppSelector(
     (state) => state.counter.minInputValue
   );
@@ -22,8 +18,7 @@ export const SetButton = ({updateEditMode}: SetButtonProps) => {
 
   const onClickSettingsHandler = () => {
     dispatch(setCounterAC(minInputValue))
-    // dispatch(editModeAC(false))
-    updateEditMode(false);
+    dispatch(editModeAC(false))
   };
 
   return (

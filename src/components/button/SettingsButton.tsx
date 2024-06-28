@@ -1,14 +1,14 @@
 import Button from "./Button";
 import s from '../counter/Counter.module.css';
+import { useDispatch } from "react-redux";
+import { editModeAC } from "../../reducers/modeReducer";
 
-type Props = {
-  updateEditMode: (isEditMode: boolean) => void;
-}
+export const SittingsButton = () => {
 
-export const SittingsButton = ({updateEditMode}: Props) => {
+  const dispatch = useDispatch();
 
   const updateEditModeHandler = () => {
-    updateEditMode(true);
+    dispatch(editModeAC(true))
   };
 
   return <Button className={s.btn} onClick={updateEditModeHandler}>settings</Button>
