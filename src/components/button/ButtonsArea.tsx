@@ -3,19 +3,19 @@ import { useAppSelector } from "../../hooks/hooks";
 import { incrementCounterAC, resetCounterAC } from "../../reducers/countReducer";
 import Button from "./Button";
 import s from '../counter/Counter.module.css';
+import { editModeAC } from "../../reducers/modeReducer";
 
-type ButtonsAreaProps = {
-  updateEditMode: (isEditMode: boolean) => void;
-};
-
-export const ButtonsArea = ({ updateEditMode }: ButtonsAreaProps) => {
-  const dispatch = useDispatch();
+export const ButtonsArea = () => {
+  
   const isMax = useAppSelector(
     (state) => state.counter.count === state.counter.maxInputValue
   );
   const isMin = useAppSelector(
     (state) => state.counter.count === state.counter.minInputValue
   );
+
+  const dispatch = useDispatch();
+  
   const incrementCounterHandler = () => {
     dispatch(incrementCounterAC());
   };
@@ -25,7 +25,7 @@ export const ButtonsArea = ({ updateEditMode }: ButtonsAreaProps) => {
   };
 
   const updateEditModeHandler = () => {
-    updateEditMode(true);
+    dispatch(editModeAC(true))
   };
   return (
     <div className={s.btnStyle}>
