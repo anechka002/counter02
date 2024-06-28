@@ -3,11 +3,7 @@ import s from './Counter.module.css';
 import { ButtonsArea } from '../button/ButtonsArea';
 import { Screen } from './screen/Screen';
 
-type Props = {
-  updateEditMode: (isEditMode: boolean) => void;
-};
-
-export function Counter({ updateEditMode }: Props) {
+export function Counter() {
   // const {
   //   count,
   //   maxInputValue: max,
@@ -19,11 +15,11 @@ export function Counter({ updateEditMode }: Props) {
   return (
     <div className={s.counter}>
       <Screen/>
-      <ButtonsArea updateEditMode={updateEditMode} />
+      <ButtonsArea/>
       {/* <div className={s.btnStyle}>
         <IncrementButton/>
         <ResetButton/>
-        <SittingsButton updateEditMode={updateEditMode}/>
+        <SittingsButton/>
       </div> */}
     </div>
   );
