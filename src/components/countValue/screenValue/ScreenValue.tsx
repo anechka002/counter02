@@ -26,7 +26,7 @@ export const ScreenValue = () => {
   
   return (
     <div className={s.inputField}>
-        <div>
+        <div className={s.value}>
           <span>max value:</span>
           <Input
             className={

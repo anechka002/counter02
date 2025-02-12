@@ -1,5 +1,7 @@
 .App {
-  padding: 30px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(to right, rgba(249, 0, 195, 0.5), rgba(0, 8, 255, 0.538));
 }
